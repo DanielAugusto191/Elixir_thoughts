@@ -46,7 +46,7 @@ IO.puts("#{is_boolean(:true)}") # True
 # Aliases start in upper case and are also atoms
 IO.puts("are uppercase atoms? #{is_atom(Limao)}")
 
-## lambda func
+# lambda func
 add = fn a,b -> a+b end
 IO.puts(add.(1,2)) # 3
 IO.puts(is_function(add.(1,2))) # True
@@ -77,3 +77,76 @@ x = {:ok, "hello"} # 0 based index
 IO.puts(tuple_size(x)) # 2
 IO.puts(elem(x, 1)) # hello
 x = put_elem(x, 1, "world")
+
+IO.puts(50 < :atom)
+
+
+# Pattern Matching
+{1,b,c} = {1, 2, :OK}
+# IO.puts(a);
+IO.puts(b);
+IO.puts(c);
+[head | tail] = [1,2,3]
+
+b = 2
+# {^b, c} = {3, 5} error: no match of right hand side
+
+# Case
+case {"a", 2, 3} do
+  {4,5,6} -> "Not Match"
+  {"a", x, 3} -> IO.puts("Match and x = #{x}")
+  _ -> "Match any value"
+end
+
+x = 10
+case 10 do
+  ^x -> "Wont match"
+  _ -> "Will match"
+end
+
+case {1, 2, 3} do
+    {1, x, 3} when x > 0 -> "Will match"
+    _ -> "OK"
+end
+
+# hd(1) # Error
+# case 1 do
+#   x when hd(x) -> "Wont match"
+#   x -> "Got #{x}"
+# end
+
+f = fn x,y when x+y > 0 -> x + y
+  x, y -> x * y
+end
+IO.puts(f.(-1,2))
+
+cond do
+  2 + 2 == 5 ->
+    "Not true"
+  2 * 2 == 4 ->
+    "Will match"
+end
+
+k = if true do
+  "This works!"
+else
+  "Not works"
+end
+k = unless false do
+  "This works!!"
+end
+IO.puts(k)
+
+# Scope
+x = 1
+if true do
+  x = x+1
+end
+x # 1
+IO.puts(true == :true)
+
+list = [a: 0, c:1, b:2]
+
+# Map
+%{:a => a} = %{:a => 55, 2 => :b}
+a # 55
